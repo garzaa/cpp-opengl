@@ -50,3 +50,21 @@ void Shader::Activate() {
 void Shader::Delete() {
 	glDeleteProgram(ID);
 }
+
+void Shader::compileErrors(unsigned int shader, const char *type) {
+	GLint hasCompiled;
+	char infoLog[1024];
+	if (type != "PROGRAM") {
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &hasCompiled);
+		if (hasCompiled == GL_FALSE) {
+			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+			std::cout << "shader compile error: " << type << "\n" << std::endl;
+		} else {
+			glGetProgramiv(shader, GL_LINK_STATUS, &hasCompiled);
+			if (hasCompiled == GL_FALSE) {
+				glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+				std::cout << "shader linking error:" << type << "\n" << infoLog << std::endl;
+			}
+		}
+	}
+}

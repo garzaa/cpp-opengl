@@ -91,6 +91,10 @@ int main() {
 	vbo1.Unbind();
 	ebo1.Unbind();
 
+	// to set a uniform, get its reference value in the main function
+	// but you can't set it until after you activate the shader
+	GLuint uniformScaleID = glGetUniformLocation(shaderProgram.ID, "scale");
+
 	// handle closing events lol
 	while (!glfwWindowShouldClose(window)) {
 		// front color: displayed on screen
@@ -102,6 +106,9 @@ int main() {
 		// here's the actual shape render code from the indices
 		// say which shader program we want to use
 		shaderProgram.Activate();
+		// set the uniform now that it's active
+		// name changes on datatype
+		glUniform1f(uniformScaleID, 1.2f);
 		// bind the vertex array to the current rendering cycle
 		vao1.Bind();
 		// primitive type, # of indices, data type of indices, start index (offset)
